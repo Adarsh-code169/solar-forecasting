@@ -81,9 +81,8 @@ with tab1:
     fig_corr = plot_correlation_heatmap(df_featured)
     st.plotly_chart(fig_corr, use_container_width=True)
 
-# ═════════════════════════════════════════════════════════════════════════
+
 # TAB 2 – Trends & Seasonality
-# ═════════════════════════════════════════════════════════════════════════
 with tab2:
     st.header("Trends & Seasonality Analysis")
 
@@ -102,9 +101,7 @@ with tab2:
         fig_season = plot_seasonal_pattern(df_featured)
         st.plotly_chart(fig_season, use_container_width=True)
 
-# ═════════════════════════════════════════════════════════════════════════
 # TAB 3 – Forecasting
-# ═════════════════════════════════════════════════════════════════════════
 with tab3:
     st.header("Solar Power Forecasting")
 
@@ -132,14 +129,14 @@ with tab3:
         metrics = evaluate_model(model, X_test, y_test)
         y_pred = predict(model, X_test)
 
-        # ── Metrics ──────────────────────────────────────────────────
+        # Metrics
         st.subheader("Model Performance")
         m1, m2, m3 = st.columns(3)
         m1.metric("MAE", f"{metrics['MAE']:.2f} kW")
         m2.metric("RMSE", f"{metrics['RMSE']:.2f} kW")
         m3.metric("R² Score", f"{metrics['R2']:.4f}")
 
-        # ── Actual vs Predicted charts ───────────────────────────────
+        # Actual vs Predicted charts
         st.subheader("Actual vs Predicted")
         fig_avp = plot_actual_vs_predicted(
             y_test, y_pred, title=f"{model_choice} — Actual vs Predicted"
@@ -152,13 +149,13 @@ with tab3:
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
 
-        # ── Feature Importance (RF only) ─────────────────────────────
+        # Feature Importance (RF only)
         if model_choice == "Random Forest":
             st.subheader("Feature Importance")
             importances = model.feature_importances_
             fig_imp = plot_feature_importance(importances, feature_names)
             st.plotly_chart(fig_imp, use_container_width=True)
 
-# ── Footer ───────────────────────────────────────────────────────────────
+# Footer
 st.sidebar.markdown("---")
 st.sidebar.caption("Solar Energy Forecasting — Milestone 1")

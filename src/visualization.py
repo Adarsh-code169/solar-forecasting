@@ -110,6 +110,51 @@ def plot_correlation_heatmap(df: pd.DataFrame):
     return fig
 
 
+# Actual vs Predicted (Milestone 1 — evaluation of forecasting accuracy)
+
+def plot_actual_vs_predicted(y_true, y_pred, title="Actual vs Predicted"):
+    """Line chart comparing actual and predicted solar power values."""
+    import pandas as pd
+    df = pd.DataFrame({"Actual": y_true, "Predicted": y_pred}).reset_index(drop=True)
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(y=df["Actual"], mode="lines", name="Actual", line=dict(color="#636EFA")))
+    fig.add_trace(go.Scatter(y=df["Predicted"], mode="lines", name="Predicted", line=dict(color="#EF553B", dash="dash")))
+    fig.update_layout(
+        title=title,
+        xaxis_title="Sample",
+        yaxis_title="Power (kW)",
+        template="plotly_white",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    )
+    return fig
+
+
+def plot_scatter_actual_vs_predicted(y_true, y_pred, title="Scatter: Actual vs Predicted"):
+    """Scatter plot of actual vs predicted values with a perfect-prediction reference line."""
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=y_true, y=y_pred,
+        mode="markers",
+        marker=dict(color="#00CC96", opacity=0.6, size=5),
+        name="Predictions",
+    ))
+    min_val = float(min(min(y_true), min(y_pred)))
+    max_val = float(max(max(y_true), max(y_pred)))
+    fig.add_trace(go.Scatter(
+        x=[min_val, max_val], y=[min_val, max_val],
+        mode="lines",
+        line=dict(color="red", dash="dash"),
+        name="Perfect Fit",
+    ))
+    fig.update_layout(
+        title=title,
+        xaxis_title="Actual (kW)",
+        yaxis_title="Predicted (kW)",
+        template="plotly_white",
+    )
+    return fig
+
+
 #Helpers 
 
 def _empty_figure(message: str):
